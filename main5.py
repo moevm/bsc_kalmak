@@ -106,3 +106,20 @@ ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
 plt.show()
+
+# Визуализация облака точек через open3d
+pcd = o3d.geometry.PointCloud()
+pcd.points = o3d.utility.Vector3dVector(points_cloud)
+
+vis = o3d.visualization.Visualizer()
+vis.create_window()
+
+real_color = False
+if real_color:
+    pcd.colors = o3d.utility.Vector3dVector(points_color1)
+    vis.get_render_option().background_color = [0, 0, 1]
+
+vis.add_geometry(pcd)
+
+vis.run()
+vis.destroy_window()
