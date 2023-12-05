@@ -70,3 +70,30 @@ plt.plot(epoch_list, loss_list)
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
 plt.show()
+
+test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
+test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=1, shuffle=False)
+
+data_iter = iter(test_loader)
+images, labels = next(data_iter)
+
+# Визуализация исходного изображения
+plt.imshow(images[0].squeeze(), cmap="gray")
+plt.axis('off')
+plt.show()
+
+with torch.no_grad():
+    decoded = autoencoder.forward(images[0].view(images[0].size(0), -1))
+
+decoded = decoded.numpy().reshape(decoded.size(0), 28, 28)
+points_cloud = []
+points_color = images[0].squeeze()
+points_color1 = (np.vstack((images[0].flatten(), images[0].flatten(), images[0].flatten())).T + 1) / 2
+
+for i in range(decoded.shape[0]):
+    image = decoded[i]
+    x, y = np.meshgrid(range(28), range(28))
+    points = np.vstack((x.flatten(), y.flatten(), image.flatten())).T
+    points_cloud.append(points)
+
+points_cloud = np.concatenate(points_cloud, axis=0)
