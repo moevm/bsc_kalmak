@@ -97,3 +97,12 @@ for i in range(decoded.shape[0]):
     points_cloud.append(points)
 
 points_cloud = np.concatenate(points_cloud, axis=0)
+
+# Визуализация облака точек через matplotlib
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(points_cloud[:, 0], points_cloud[:, 1], points_cloud[:, 2], c=points_color1, marker='.')
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+plt.show()
