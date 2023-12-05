@@ -48,7 +48,7 @@ num_epochs = 10
 epoch_list = []
 loss_list = []
 for epoch in range(num_epochs):
-    for data in train_loader:
+    for batch_idx, data in enumerate(train_loader):
         img, _ = data
         img = img.view(img.size(0), -1)
 
@@ -58,9 +58,10 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-    # Вывод прогресса обучения
-    print('Epoch [{}/{}], Loss: {:.4f}'.format(
-        epoch + 1, num_epochs, loss.item()))
+        # Вывод прогресса обучения
+        if (batch_idx + 1) % 100 == 0 or (batch_idx + 1) % len(train_loader) == 0:
+            print('Epoch [{}/{}], [{}/{}] Loss: {:.4f}'.format(
+                epoch + 1, num_epochs, batch_idx + 1, len(train_loader), loss.item()))
     epoch_list.append(epoch + 1)
     loss_list.append(loss.item())
 
