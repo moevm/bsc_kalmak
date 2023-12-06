@@ -124,3 +124,24 @@ vis.add_geometry(pcd)
 
 vis.run()
 vis.destroy_window()
+
+# Визуализация модели через open3d
+pcd2 = o3d.geometry.PointCloud()
+pcd2.points = o3d.utility.Vector3dVector(points_cloud)
+mesh, points = pcd2.compute_convex_hull()
+mesh_vertex_colors = np.random.uniform(0, 1, size=(len(mesh.vertices), 3))
+mesh.vertex_colors = o3d.utility.Vector3dVector(mesh_vertex_colors)
+
+vis2 = o3d.visualization.Visualizer()
+vis2.create_window()
+
+real_color = True
+if real_color:
+    pcd2.colors = o3d.utility.Vector3dVector(points_color1)
+    vis2.get_render_option().background_color = [0, 0, 1]
+
+vis2.add_geometry(pcd2)
+vis2.add_geometry(mesh)
+
+vis2.run()
+vis2.destroy_window()
